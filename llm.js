@@ -2,7 +2,7 @@ import readline from "readline-sync";
 import { tools } from "./index.js"
 import { GoogleGenAI } from "@google/genai";
 import "dotenv/config";
-import {cmdInfo} from "./commandInfo.js";
+import { cmdInfo } from "./commandInfo.js";
 import os from "os";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -44,7 +44,7 @@ async function buildTools(prompt) {
         if (result.functionCalls && result.functionCalls.length > 0) {
             const fnCall = result.functionCalls[0]
             const { name, args } = fnCall
-            
+
             console.log(`\n[Tool Call] Executing: ${name} with args:`, JSON.stringify(args));
             const response = await tools[name](args)
             console.log(`[Tool Response]:`, response);
@@ -53,6 +53,7 @@ async function buildTools(prompt) {
                 role: "model",
                 parts: [{ functionCall: fnCall }]
             })
+            
             history.push({
                 role: "user",
                 parts: [{
